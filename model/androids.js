@@ -60,32 +60,35 @@ Android.sendMessage = (id, latency, heart, callback)=> {
             return;
         }
 
-        var token = docs['token'][0];
+        var tokens = docs['token'];
         var meanLatency = (docs['zone'][1] + docs['zone'][2] + docs['zone'][3] + docs['zone'][4]) / 4;
 
         console.log('mean : ', meanLatency);
         console.log('latency', latency);
 
         if (meanLatency < latency || heart < 80 || heart > 160) {
-            console.log(token);
 
-            var message = {
-                registration_id: token, // required
-                collapse_key: 'Collapse key',
-                data1: 'this is data1 war !',
-                data2: 'this is data2 war !'
-            };
+            tokens.forEach((item, idx)=> {
+                console.log(item);
 
-            console.log(message);
+                var message = {
+                    registration_id: item, // required
+                    collapse_key: 'Collapse key',
+                    data1: 'this is data1 war !',
+                    data2: 'this is data2 war !'
+                };
 
-            fcm.send(message, function (err, messageId) {
-                if (err) {
-                    console.log("Something has gone wrong!");
-                    callback(err);
-                } else {
-                    console.log("Sent with message ID: ", messageId);
-                    callback(null, {'msg': 'success'});
-                }
+                console.log(message);
+
+                fcm.send(message, function (err, messageId) {
+                    if (err) {
+                        console.log("Something has gone wrong!");
+                        callback(err);
+                    } else {
+                        console.log("Sent with message ID: ", messageId);
+                        callback(null, {'msg': 'success'});
+                    }
+                });
             });
         } else {
             callback(null, 'err~~');
