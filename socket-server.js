@@ -17,10 +17,7 @@ const server = net.createServer(socket=> {
     socket.on('data', data=> {
         console.log('>>' + data);
 
-        var strArr = data.split('//');
-        strArr.forEach((item, idx)=> {
-            console.log(item);
-        });
+        console.log(data);
     });
 
     socket.on('end', ()=> {
