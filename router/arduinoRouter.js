@@ -11,7 +11,6 @@ router.route('/arduino/zone').get(setZone);
 function registerArduino(req, res) {
 
     var id = req.query['id'];
-    console.log(id);
     Arduino.registerAduino(id, (err, result)=> {
         if (err) {
             res.status(500).send({msg: err.message});

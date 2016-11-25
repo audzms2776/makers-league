@@ -22,32 +22,47 @@ function Arduinoes() {
 
 Arduinoes.registerAduino = (id, callback)=> {
 
-    var obj = {
-        "arduino_id": id,
-        "token": [],
-        "zone": {
-            "1": 0.0,
-            "2": 0.0,
-            "3": 0.0,
-            "4": 0.0
-        },
-        "danger": {
-            "1": 0.0,
-            "2": 0.0,
-            "3": 0.0,
-            "4": 0.0
-        }
-    };
+    db.collection('users').findOne({'arduino_id': id}, (err, docs)=> {
 
-    db.collection('users').insertOne(obj, (err)=> {
         if (err) {
             console.log(err);
             callback(err);
             return;
         }
 
-        console.log(obj);
-        callback(null, {'msg': 'success'});
+        if (docs != undefined) {
+            console.log(docs == undefined);
+            callback(null, {'msg': '이미 있는 사용자'});
+            return;
+        }
+
+        var obj = {
+            "arduino_id": id,
+            "token": [],
+            "zone": {
+                "1": 0.0,
+                "2": 0.0,
+                "3": 0.0,
+                "4": 0.0
+            },
+            "danger": {
+                "1": 0.0,
+                "2": 0.0,
+                "3": 0.0,
+                "4": 0.0
+            }
+        };
+
+        db.collection('users').insertOne(obj, (err)=> {
+            if (err) {
+                console.log(err);
+                callback(err);
+                return;
+            }
+
+            console.log(obj);
+            callback(null, {'msg': 'success'});
+        });
     });
 };
 

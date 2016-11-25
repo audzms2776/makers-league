@@ -17,7 +17,8 @@ const server = net.createServer(socket=> {
     socket.on('data', data=> {
         console.log('>>' + data);
 
-        console.log(data);
+        var resData = data.toString();
+        console.log(resData);
     });
 
     socket.on('end', ()=> {
