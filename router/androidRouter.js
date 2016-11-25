@@ -25,10 +25,12 @@ function registerAndroid(req, res) {
 }
 
 function sendFCM(req, res) {
-    var target = ids[req.query['target']];
-    console.log(target);
+    var id = req.query['id'];
+    var latency = req.query['latency'];
+    var heart = req.query['heart'];
+    console.log(id);
 
-    Android.sendMessage(target, (err, result)=> {
+    Android.sendMessage(id, latency, heart, (err, result)=> {
         if (err) {
             res.status(500).send({msg: err.message});
             return;

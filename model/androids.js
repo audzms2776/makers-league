@@ -2,7 +2,7 @@
  * Created by TT on 2016-11-25.
  */
 var FCM = require('fcm').FCM;
-const apiKey = 'API Key';
+const apiKey = 'AIzaSyCdgBXBkjegfQ9yynJEAKEmQBcR5QeE1V0';
 var fcm = new FCM(apiKey);
 
 const MongoClient = require('mongodb').MongoClient;
@@ -33,7 +33,7 @@ Android.saveAndroid = (token, id, callback)=> {
         }
 
         var tokens = docs['token'];
-        if(tokens.indexOf(token) != -1){
+        if (tokens.indexOf(token) != -1) {
             console.log('이미 있는 사용자');
             callback(null, {'msg': 'user'});
             return
@@ -50,21 +50,45 @@ Android.saveAndroid = (token, id, callback)=> {
     });
 };
 
-Android.sendMessage = (token, callback)=> {
-    var message = {
-        registration_id: token, // required
-        collapse_key: 'Collapse key',
-        data1: 'this is data1 war !',
-        data2: 'this is data2 war !'
-    };
+Android.sendMessage = (id, latency, heart, callback)=> {
 
-    fcm.send(message, function (err, messageId) {
+    db.collection('users').findOne({'arduino_id': id}, (err, docs)=> {
+
         if (err) {
-            console.log("Something has gone wrong!");
+            console.log(err);
             callback(err);
+            return;
+        }
+
+        var token = docs['token'][0];
+        var meanLatency = (docs['zone'][1] + docs['zone'][2] + docs['zone'][3] + docs['zone'][4]) / 4;
+
+        console.log('mean : ', meanLatency);
+        console.log('latency', latency);
+
+        if (meanLatency < latency || heart < 80 || heart > 160) {
+            console.log(token);
+
+            var message = {
+                registration_id: token, // required
+                collapse_key: 'Collapse key',
+                data1: 'this is data1 war !',
+                data2: 'this is data2 war !'
+            };
+
+            console.log(message);
+
+            fcm.send(message, function (err, messageId) {
+                if (err) {
+                    console.log("Something has gone wrong!");
+                    callback(err);
+                } else {
+                    console.log("Sent with message ID: ", messageId);
+                    callback(null, {'msg': 'success'});
+                }
+            });
         } else {
-            console.log("Sent with message ID: ", messageId);
-            callback(null, {'msg': 'success'});
+            callback(null, 'err~~');
         }
     });
 };

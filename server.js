@@ -13,7 +13,7 @@ app.use(express.static('.'));
 app.use(express.static('./public'));
 
 const aduinoRouter = require('./router/arduinoRouter');
-const androidRouter = require('./router/arndroidRouter');
+const androidRouter = require('./router/androidRouter');
 
 app.use(aduinoRouter);
 app.use(androidRouter);

@@ -76,7 +76,8 @@ Arduinoes.saveZone = (id, call, latency, mode, callback)=> {
         }
 
         var obj = docs;
-        obj[mode][call] = parseInt(latency);
+        console.log(obj['zone']);
+        obj['zone'][call] = parseInt(latency);
 
         db.collection('users').updateOne({'arduino_id': id}, {$set: obj}, (err)=> {
             if (err) {
