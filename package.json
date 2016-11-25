@@ -11,10 +11,12 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "crypto": "0.0.3",
     "express": "^4.14.0",
     "fcm": "^1.0.3",
     "mongodb": "^2.2.11",
     "morgan": "^1.7.0",
-    "net": "^1.0.2"
+    "net": "^1.0.2",
+    "request": "^2.79.0"
   }
 }
