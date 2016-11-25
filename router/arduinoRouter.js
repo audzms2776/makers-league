@@ -3,16 +3,15 @@
  */
 const express = require('express');
 const router = express.Router();
-const app = express();
-const Arduino = require('../model/aduinoes');
+const Arduino = require('../model/arduinoes');
 
-router.route('arduino/register').get(registerAudino);
-router.route('arduino/zone').get(setZone);
+router.route('/arduino/register').get(registerArduino);
+router.route('/arduino/zone').get(setZone);
 
-function registerAudino(req, res) {
+function registerArduino(req, res) {
 
     var id = req.query['id'];
-
+    console.log(id);
     Arduino.registerAduino(id, (err, result)=> {
         if (err) {
             res.status(500).send({msg: err.message});

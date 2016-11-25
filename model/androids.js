@@ -25,13 +25,28 @@ function Android() {
 }
 
 Android.saveAndroid = (token, id, callback)=> {
-    db.collection('users').updateOne({'arduino_id': id}, {'token': {$push: token}}, (err)=> {
+
+    db.collection('users').findOne({'arduino_id': id}, (err, docs)=> {
         if (err) {
-            console.log('error');
+            callback(err);
             return;
         }
 
-        callback(null, {'msg': 'success'});
+        var tokens = docs['token'];
+        if(tokens.indexOf(token) != -1){
+            console.log('이미 있는 사용자');
+            callback(null, {'msg': 'user'});
+            return
+        }
+
+        db.collection('users').updateOne({'arduino_id': id}, {$push: {'token': token}}, (err)=> {
+            if (err) {
+                callback(err);
+                return;
+            }
+
+            callback(null, {'msg': 'success'});
+        });
     });
 };
 

@@ -53,31 +53,25 @@ Arduinoes.registerAduino = (id, callback)=> {
 
 Arduinoes.saveZone = (id, call, latency, mode, callback)=> {
 
-    var obj = {[call]: latency};
-
-    db.collection('users').updateOne({'arduino_id': id}, {[mode]: {$set: obj}}, (err)=> {
+    db.collection('users').findOne({'arduino_id': id}, (err, docs)=> {
         if (err) {
             console.log(err);
-            res.send({'msg': 'fail'});
+            callback(err);
             return;
         }
 
-        res.send({'msg': 'success'});
-    });
-};
+        var obj = docs;
+        obj[mode][call] = parseInt(latency);
 
-Arduinoes.saveDanger = (id, call, latency)=> {
+        db.collection('users').updateOne({'arduino_id': id}, {$set: obj}, (err)=> {
+            if (err) {
+                console.log(err);
+                callback(err);
+                return;
+            }
 
-    var obj = {[call]: latency};
-
-    db.collection('users').updateOne({'arduino_id': id}, {'danger': {$set: obj}}, (err)=> {
-        if (err) {
-            console.log(err);
-            res.send({'msg': 'fail'});
-            return;
-        }
-
-        res.send({'msg': 'success'});
+            callback(null, {'msg': 'success'});
+        });
     });
 };
 
