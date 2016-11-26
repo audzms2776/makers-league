@@ -29,7 +29,7 @@ const server = net.createServer(socket=> {
         var values = [];
 
         orders.forEach((item, idx)=> {
-            values.push(item.split('=')[1].replace('\n\n', ''));
+            values.push(item.split('=')[1].replace('\n', ''));
             console.log(item.split('=')[1]);
         });
 
