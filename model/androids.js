@@ -66,7 +66,7 @@ Android.sendMessage = (id, latency, heart, callback)=> {
         console.log('mean : ', meanLatency);
         console.log('latency', latency);
 
-        if (meanLatency < latency || heart < 80 || heart > 160) {
+        if (meanLatency < latency + 20 || meanLatency > latency - 20 || heart < 80 || heart > 160) {
 
             tokens.forEach((item, idx)=> {
                 console.log(item);
