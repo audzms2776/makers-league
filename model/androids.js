@@ -72,26 +72,32 @@ Android.sendMessage = (id, latency, heart, callback)=> {
         console.log('mean : ', meanLatency);
         console.log('latency', latency);
 
-        if (meanLatency + 20 < latency || heart < 80 || heart > 160) {
+        forEach(tokens, function (item) {
+            var done = this.async();
 
-            var message = {
-                registration_id: tokens[0], // required
-            };
+            if (meanLatency + 20 < latency || heart < 80 || heart > 160) {
 
-            console.log(message);
+                var message = {
+                    registration_id: item, // required
+                };
 
-            fcm.send(message, function (err, messageId) {
-                if (err) {
-                    console.log("Something has gone wrong!");
-                    callback(err);
-                } else {
-                    console.log("Sent with message ID: ", messageId);
-                    callback(null, {'msg': 'success'});
-                }
-            });
-        } else {
-            callback(null, 'safe~~');
-        }
+                console.log(message);
+
+                fcm.send(message, function (err, messageId) {
+                    if (err) {
+                        console.log("Something has gone wrong!");
+                        callback(err);
+                    } else {
+                        console.log("Sent with message ID: ", messageId);
+                        done();
+                    }
+                });
+            } else {
+                callback(null, 'safe~~');
+            }
+        }, ()=> {
+            callback(null, {'msg': 'success'});
+        });
     });
 };
 
