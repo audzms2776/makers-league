@@ -65,6 +65,10 @@ Android.sendMessage = (id, latency, heart, callback)=> {
         var tokens = docs['token'];
         var meanLatency = (docs['zone'][1] + docs['zone'][2] + docs['zone'][3]) / 4;
 
+        if (docs['zone'][1] == '0' || docs['zone'][2] == '0' || docs['zone'][3] == '0') {
+            callback(null, {msg: 'not'});
+            return;
+        }
         console.log('mean : ', meanLatency);
         console.log('latency', latency);
 
