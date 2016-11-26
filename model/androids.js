@@ -68,7 +68,7 @@ Android.sendMessage = (id, latency, heart, callback)=> {
         console.log('mean : ', meanLatency);
         console.log('latency', latency);
 
-        if (meanLatency + 20 < latency || meanLatency > latency || heart < 80 || heart > 160) {
+        if (meanLatency + 20 < latency || heart < 80 || heart > 160) {
 
             var message = {
                 registration_id: tokens[0], // required
