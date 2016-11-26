@@ -4,6 +4,8 @@
 var FCM = require('fcm').FCM;
 const apiKey = 'AIzaSyCdgBXBkjegfQ9yynJEAKEmQBcR5QeE1V0';
 var fcm = new FCM(apiKey);
+const async = require('async');
+const forEach = require('async-foreach').forEach;
 
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017/papat';
@@ -66,9 +68,11 @@ Android.sendMessage = (id, latency, heart, callback)=> {
         console.log('mean : ', meanLatency);
         console.log('latency', latency);
 
-        if (meanLatency < latency + 20 || meanLatency > latency - 20 || heart < 80 || heart > 160) {
+        if (meanLatency < latency + 40 || meanLatency > latency - 40 || heart < 80 || heart > 160) {
 
-            tokens.forEach((item, idx)=> {
+            forEach(tokens, (item, idx)=> {
+
+                var done = this.async();
                 console.log(item);
 
                 var message = {
@@ -86,9 +90,11 @@ Android.sendMessage = (id, latency, heart, callback)=> {
                         callback(err);
                     } else {
                         console.log("Sent with message ID: ", messageId);
-                        callback(null, {'msg': 'success'});
+                        done();
                     }
                 });
+            }, ()=> {
+                callback(null, {'msg': 'success'});
             });
         } else {
             callback(null, 'err~~');
