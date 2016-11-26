@@ -66,7 +66,7 @@ Arduinoes.registerAduino = (id, callback)=> {
     });
 };
 
-Arduinoes.saveZone = (id, call, latency, mode, callback)=> {
+Arduinoes.saveZone = (id, call, latency, callback)=> {
 
     db.collection('users').findOne({'arduino_id': id}, (err, docs)=> {
         if (err) {

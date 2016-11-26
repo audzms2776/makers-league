@@ -25,9 +25,8 @@ function setZone(req, res) {
     var id = req.query['id'];
     var call = req.query['call'];
     var latency = req.query['latency'];
-    var mode = req.query['mode'];
 
-    Arduino.saveZone(id, call, latency, mode, (err, result)=> {
+    Arduino.saveZone(id, call, latency, (err, result)=> {
         if (err) {
             res.status(500).send({msg: err.message});
             return;
