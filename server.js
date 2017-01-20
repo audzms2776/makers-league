@@ -18,6 +18,6 @@ const androidRouter = require('./router/androidRouter');
 app.use(aduinoRouter);
 app.use(androidRouter);
 
-app.listen(3000, ()=> {
+app.listen(4000, ()=> {
     console.log('server 3000 start');
 });
